@@ -1,4 +1,4 @@
-:;; === Global configuration ===
+:; === Global configuration ===
 
 ;; --- Packages ---
 
@@ -17,6 +17,7 @@
       '(;; Utilities
         company
         flycheck
+        magit
         paredit
         rainbow-delimiters
 
@@ -31,33 +32,45 @@
         ;; Themes
         zenburn-theme))
 
+;; --- Package customisation --
+
+;; Company mode
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; Flycheck
+(global-flycheck-mode)
+
+;; IDO mode
+(require 'ido)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode t)
+
+;; Magit
+(global-set-key (kbd "C-x g") 'magit-status)
+
+;; Windmove
+(windmove-default-keybindings)
+
 ;; --- Interface ---
 
-;; Remove the GUI menu bar from the top of the terminal window.
+;; Remove the cruft.
 (menu-bar-mode -1)
+(tool-bar-mode -1)
 
 ;; Mark the zenburn theme file as safe and select it.
 (add-to-list 'custom-safe-themes
              "04232a0bfc50eac64c12471607090ecac9d7fd2d79e388f8543d1c5439ed81f5")
 (load-theme 'zenburn)
 
-;; Enable company mode globally.
-(add-hook 'after-init-hook 'global-company-mode)
-
-;; Enable Flycheck.
-(global-flycheck-mode)
-
-;; Enable IDO mode.
-(require 'ido)
-(ido-mode t)
-
-;; Enable windmove.
-(windmove-default-keybindings)
-
 ;; Use spaces for all indentation by default.
 (setq-default indent-tabs-mode nil)
 
 ;; --- Global functionality ---
+
+;; Move custom cruft to an external file
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file 'noerror)
 
 ;; Place backups in a global directory
 (setq backup-by-copying t
